@@ -1,0 +1,8 @@
+- name: Cntainer
+  hosts: node
+  tasks:
+  - name: web conatiner
+    docker_container:
+      image: webserver
+      name: web
+      state: started
