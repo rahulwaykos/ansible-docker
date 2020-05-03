@@ -1,0 +1,7 @@
+- name: Create image
+  hosts: node
+  tasks:
+  - name: build image 
+    docker_image:
+      path: docker
+      name: webserver
