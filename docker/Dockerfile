@@ -1,7 +1,7 @@
-FROM debian:8.5
+FROM centos:7
 
-RUN apt-get update
-RUN apt-get install -y nginx
+RUN yum update
+RUN yum install -y nginx
 RUN echo 'Default page. Nginx is in your container. ' \
 >/usr/share/nginx/html/index.html
 EXPOSE 80
