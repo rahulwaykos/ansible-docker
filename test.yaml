@@ -1,0 +1,15 @@
+---
+- hosts: node01
+  become: true
+   
+- name: Pull default Docker image
+      docker_image:
+        name: nginx
+        source: pull
+
+    # Creates the number of containers defined by the variable create_containers, using values from vars file
+    - name: Create default containers
+      docker_container:
+        name: test
+        image: nginx
+        state: present
