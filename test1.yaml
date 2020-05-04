@@ -1,25 +1,41 @@
-    ---
-    - hosts: node
-      become: yes
-      become_method: sudo
-      tasks:
-        - name: Install pip
-          apt: name=python-pip state=present
-      
-        - name: install docker-py
-          pip: name=docker-py
-      
-        - name: Build Docker image from Dockerfile
-          docker_image:
-            name: web
-            path: docker
-            state: build
-        
-        - name: Running the container
-          docker_container:
-            image: web:latest
-            path: docker
-            state: running
-            
-        - name: Check if container is running
-          shell: docker ps
+---
+- hosts: node
+  become: yes
+  tasks:
+    - name: Install pip
+      yum: name=python-pip state=present
+  
+    - name: install docker-py
+      pip: name=docker-py
+  
+    - name: Build Docker image from Dockerfile
+      docker_image:
+        name: web
+        path: docker
+        state: build
+    
+    - name: Create a volume with options
+      docker_volume:
+        name: volume
+
+    - name: Running the container
+      docker_container:
+        name: test
+        image: web
+       # path: docker
+        state: started
+      #  volumes:
+       # - "volume:/usr/share/nginx/html:rw"
+        ports:
+        - "8080:80"
+        tty: true
+        detach: true
+     
+
+
+    - name: Check if container is running
+      shell: sh 1.sh
+      register: ipdocker
+    
+    - name: Print IP of container
+      debug: msg="the ip is {{ ipdocker.stdout }}"
